@@ -1,0 +1,5 @@
+data:
+  max_seq: 40
+model:
+  activation: softmax
+  dropout: 0.8

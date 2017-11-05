@@ -1,0 +1,4 @@
+activation: softmax
+dropout: 
+  - 0
+  - 1

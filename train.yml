@@ -1,0 +1,17 @@
+data:
+  max_seq: 'False'
+  phi_weight: 'False'
+  seq_over: 'False'
+  tags: 'False'
+model:
+  loss: categorical_crossentropy
+  optimizer: rmsprop
+  activation: relu
+  dropout: 
+  - 0
+  - 1
+  input_dim: 100
+  activation2: softmax
+  list: 
+  - 1000
+  - 100
