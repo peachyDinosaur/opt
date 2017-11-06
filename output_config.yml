@@ -1,5 +1,9 @@
-data:
-  max_seq: 40
-model:
-  activation: softmax
-  dropout: 0.8
+activation: !!python/tuple
+- activation
+- softmax
+decimal: !!python/tuple
+- decimal
+- 0.1
+dropout: !!python/tuple
+- dropout
+- 1

@@ -1,4 +1,4 @@
-activation: softmax
-dropout: 
-  - 0
-  - 1
+model:
+  activation: softmax
+  dropout: 1
+  decimal: 0.1

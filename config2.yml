@@ -1,0 +1,5 @@
+bool: True
+activation: softmax
+dropout: 1
+decimal: 0.1
+bool: True
