@@ -100,7 +100,7 @@ def intVal(hyperparameter):
         print()
         stepSize = validInput(" {}  --  Step Size : ".format(hyperparameter), int)
         print()
-        vals = list(range(minVal, (maxVal), stepSize))
+        vals = list(range(minVal, (maxVal+1), stepSize))
         print(vals)
         return vals
 
@@ -165,7 +165,7 @@ def boolValue(hyperparameter):
 
 #loading YAML file
 #with open("training.yml", "r") as yaml_file:
-with open("config2.yml", "r") as yaml_file:
+with open("config.yml", "r") as yaml_file:
   input_hyper_parameters = yaml.load(yaml_file)
 
 #Print hyperparms
@@ -176,18 +176,27 @@ space = {}
 
 
 #Looping through items in YAML file
-for hyperparemeters in input_hyper_parameters.items():
-    #current hyper
-    print(hyperparemeters)
+for paramter_group, hyperparemeters in input_hyper_parameters.items():
+  print ('')
+  print (' For the Hyperparameter group : {}'.format(paramter_group))
+
+  for hyperparameter in hyperparemeters:
+
+    hyperparameter_value = hyperparemeters[hyperparameter]
+    label = str(hyperparameter)
+    Current = str(hyperparemeters[hyperparameter])
+    print (type(hyperparameter_value))
+
+    print ('')
+    print ('')
 
 
     #assigning instance variables 
-    hyperparameter_value = hyperparemeters[1] 
-    label = str(hyperparemeters[0])
-    Current = str(hyperparemeters[1])
+
+
 
     #creating empty dictionary entry
-    space[hyperparemeters[0]]= None
+    space[hyperparameter]= None
     print()
     print (' Current value of - ' + label + ' is : ' + Current)
     print (' Please enter a value for {} and ensure that it is of type {}'.format(label,type(hyperparameter_value)))
