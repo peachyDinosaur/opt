@@ -1,8 +1,11 @@
 import yaml
 import pprint
-import sys
+import sys,os
 import numpy as np
 from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
+
+
+
 
 def boolify(input_string):
 # edited from https://github.com/cgreer/cgAutoCast/blob/master/cgAutoCast.py
@@ -23,6 +26,18 @@ def yesNo(input_string):
     return 'no'
 
   raise ValueError('Not Yes or no Value!')
+
+
+def rOu(input_string):
+  input_string = input_string.lower()
+  if input_string == 'r' or input_string == 'random':
+    return 'r'
+
+  if input_string == 'u' or input_string == 'uniform':
+    return 'u'
+
+  raise ValueError('Not correct Value!')
+
 
 def estimateType(input_var):
 
@@ -52,6 +67,17 @@ def validInput(input_string, inputType):
         except ValueError:
             print(' Not correct type')
 
+def isGreaterThan(min, max, step=None):
+    if min > max:
+        print(' {} cannot be greater than {}'.format(min,max))
+        minVal = validInput(" {}  -- Minimum Value : ".format(hyperparameter), int)
+        isGreaterThan(minVal, max)
+    else:
+        return min
+
+
+
+
 def frange(x, y, jump):
   while x < y:
     yield x
@@ -74,7 +100,7 @@ def stringInput(hyper):
     print(' Do you want a list ?')
     wants_list = validInput(' Yes or no ? ', yesNo)
     vals = []
-    if wants_list == 'y':
+    if wants_list == 'yes':
         num = validInput(' How many items ? ', int)
         for i in range(num):
             item = input(' What are the {} functions you want to add '.format(hyper))
@@ -98,8 +124,10 @@ def intVal(hyperparameter):
         print()
         maxVal = validInput(" {}  -- Maximum Value : ".format(hyperparameter), int)
         print()
+        minVal = isGreaterThan(minVal,maxVal)
         stepSize = validInput(" {}  --  Step Size : ".format(hyperparameter), int)
         print()
+        #stepSize = isGreaterThan(mi, maxVal)
         vals = list(range(minVal, (maxVal+1), stepSize))
         print(vals)
         return vals
@@ -162,10 +190,23 @@ def boolValue(hyperparameter):
         return [validInput(inp, boolify)]
 
 
-
 #loading YAML file
 #with open("training.yml", "r") as yaml_file:
-with open("config.yml", "r") as yaml_file:
+validPath = True
+while validPath:
+    filePath = input(' Specify you path to the config file you want to use: ')
+    if not os.access(filePath, os.W_OK):
+        try:
+            print(' Unable to open file')
+            open(filePath, 'r').close()
+            os.unlink(filePath)
+        except OSError:
+            # handle error here
+            print(' Not a Valid Path ')
+    else:
+        validPath = False
+
+with open(filePath, "r") as yaml_file:
   input_hyper_parameters = yaml.load(yaml_file)
 
 #Print hyperparms
@@ -214,7 +255,7 @@ for paramter_group, hyperparemeters in input_hyper_parameters.items():
         print(' Would you like a random choice')
         print(' Or would you like a uniform choice')
         #TODO type checking or restructure
-        choice = input(' Enter r or u: ')
+        choice = validInput(' Enter r or u: ', rOu)
 
         if choice == 'r':
             print(' you picked random')
