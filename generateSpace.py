@@ -287,7 +287,7 @@ for paramter_group, hyperparemeters in input_hyper_parameters.items():
     
     print(space)
     #space[label] = hp.choice(label, vals)
-
+evaluations = validInput(' How Many evaluations: ', int)
 #space['activation'] = hp.choice('activation', ['tanh', 'relu'])
 #space['dropout'] = hp.uniform('dropout', low=0.001, high=1)
 

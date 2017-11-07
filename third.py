@@ -86,7 +86,7 @@ def mlp(space):
 # space = {}
 
 space = gs.space
-
+evaluations = gs.evaluations
 # space['activation'] = hp.choice('activation', ['tanh', 'relu'])
 # space['dropout'] = hp.uniform('dropout', low=0.001, high=1)
 
