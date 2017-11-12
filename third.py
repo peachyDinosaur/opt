@@ -5,6 +5,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.optimizers import RMSprop
 import numpy as np
+import pickle
 import generateSpace as gs
 
 batch_size = 128
@@ -83,10 +84,11 @@ def mlp(space):
 #         }
 
 
-# space = {}
+space = {}
 
-space = gs.space
-evaluations = gs.evaluations
+space = gs.genSpace()
+print (' printing space from model: ', space)
+#evaluations = gs.evaluations
 # space['activation'] = hp.choice('activation', ['tanh', 'relu'])
 # space['dropout'] = hp.uniform('dropout', low=0.001, high=1)
 
@@ -105,6 +107,7 @@ best = fmin(mlp,
             max_evals=2)
 
 # Get the trained model from the best trial
+pickle.dump(trials, open("results.pkl", "wb"))
 print (best)
 # best_model = trials.best_trial['result']['model']
 

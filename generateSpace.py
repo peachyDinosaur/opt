@@ -65,7 +65,7 @@ def validInput(input_string, inputType):
             print(type(vals))
             return vals
         except ValueError:
-            print(' Not correct type')
+            print(' Not correct type {} is required'.format(inputType))
 
 def isGreaterThan(min, max, step=None):
     if min > max:
@@ -189,108 +189,119 @@ def boolValue(hyperparameter):
         inp = ' Enter True or False '
         return [validInput(inp, boolify)]
 
+def genSpace():
+    #loading YAML file
+    #with open("training.yml", "r") as yaml_file:
+    validPath = True
+    while validPath:
+        filePath = input(' Specify you path to the config file you want to use: ')
+        if not os.access(filePath, os.W_OK):
+            try:
+                print(' Unable to open file')
+                open(filePath, 'r').close()
+                os.unlink(filePath)
+            except OSError:
+                # handle error here
+                print(' Not a Valid Path ')
+        else:
+            validPath = False
 
-#loading YAML file
-#with open("training.yml", "r") as yaml_file:
-validPath = True
-while validPath:
-    filePath = input(' Specify you path to the config file you want to use: ')
-    if not os.access(filePath, os.W_OK):
-        try:
-            print(' Unable to open file')
-            open(filePath, 'r').close()
-            os.unlink(filePath)
-        except OSError:
-            # handle error here
-            print(' Not a Valid Path ')
+    with open(filePath, "r") as yaml_file:
+      input_hyper_parameters = yaml.load(yaml_file)
+
+    #Print hyperparms
+    print(input_hyper_parameters)
+
+    #init empty space
+    space = {}
+
+    useHyper = validInput(' Do you want to use Hyperparamater optimization ? ', yesNo)
+    if useHyper == 'y' or useHyper == 'yes':
+
+        #Looping through items in YAML file
+        for paramter_group, hyperparemeters in input_hyper_parameters.items():
+          print ('')
+          print (' For the Hyperparameter group : {}'.format(paramter_group))
+
+          for hyperparameter in hyperparemeters:
+
+            hyperparameter_value = hyperparemeters[hyperparameter]
+            label = str(hyperparameter)
+            Current = str(hyperparemeters[hyperparameter])
+            print (type(hyperparameter_value))
+
+            print ('')
+            print ('')
+
+
+            #assigning instance variables 
+
+
+
+            #creating empty dictionary entry
+            space[hyperparameter]= None
+            print()
+            print (' Current value of - ' + label + ' is : ' + Current)
+            print (' Please enter a value for {} and ensure that it is of type {}'.format(label,type(hyperparameter_value)))
+            print()
+
+            #Checking type of hyper
+            if type(hyperparameter_value) == type(int()):
+                print()
+                vals = intVal(label)
+                space[label] = hp.choice(label, vals)
+                print()
+
+            if type(hyperparameter_value) == type(float()):
+                print()
+                print(' Would you like a random choice')
+                print(' Or would you like a uniform choice')
+                #TODO type checking or restructure
+                choice = validInput(' Enter r or u: ', rOu)
+
+                if choice == 'r':
+                    print(' you picked random')
+                    print()
+                    vals = ranValue(label)
+                    space[label] = hp.choice(label, vals)
+                    print()
+
+                elif choice == 'u':
+                    print(' you picked uniform')
+                    print()
+                    vals = uniValue(label)
+                    space[label] = hp.uniform(label, low=vals[0], high=vals[1])
+                    print()
+
+            if type(hyperparameter_value) == type(bool()):
+                print()
+                vals = boolValue(label)
+                space[label] = hp.choice(label, vals)
+                print()
+
+
+            if type(hyperparameter_value) == type(str()):
+                print()
+                print(' im an string')
+                vals = stringInput(label)
+                space[label] = hp.choice(label, vals)
+                print()
+            
+            print(space)
+            #space[label] = hp.choice(label, vals)
+        evaluations = validInput(' How Many evaluations: ', int)
+        #space['activation'] = hp.choice('activation', ['tanh', 'relu'])
+        #space['dropout'] = hp.uniform('dropout', low=0.001, high=1)
+
+
+        print(space)
+        return space
+
     else:
-        validPath = False
-
-with open(filePath, "r") as yaml_file:
-  input_hyper_parameters = yaml.load(yaml_file)
-
-#Print hyperparms
-print(input_hyper_parameters)
-
-#init empty space
-space = {}
-
-
-#Looping through items in YAML file
-for paramter_group, hyperparemeters in input_hyper_parameters.items():
-  print ('')
-  print (' For the Hyperparameter group : {}'.format(paramter_group))
-
-  for hyperparameter in hyperparemeters:
-
-    hyperparameter_value = hyperparemeters[hyperparameter]
-    label = str(hyperparameter)
-    Current = str(hyperparemeters[hyperparameter])
-    print (type(hyperparameter_value))
-
-    print ('')
-    print ('')
-
-
-    #assigning instance variables 
-
-
-
-    #creating empty dictionary entry
-    space[hyperparameter]= None
-    print()
-    print (' Current value of - ' + label + ' is : ' + Current)
-    print (' Please enter a value for {} and ensure that it is of type {}'.format(label,type(hyperparameter_value)))
-    print()
-
-    #Checking type of hyper
-    if type(hyperparameter_value) == type(int()):
-        print()
-        vals = intVal(label)
-        space[label] = hp.choice(label, vals)
-        print()
-
-    if type(hyperparameter_value) == type(float()):
-        print()
-        print(' Would you like a random choice')
-        print(' Or would you like a uniform choice')
-        #TODO type checking or restructure
-        choice = validInput(' Enter r or u: ', rOu)
-
-        if choice == 'r':
-            print(' you picked random')
-            print()
-            vals = ranValue(label)
-            space[label] = hp.choice(label, vals)
-            print()
-
-        elif choice == 'u':
-            print(' you picked uniform')
-            print()
-            vals = uniValue(label)
-            space[label] = hp.uniform(label, low=vals[0], high=vals[1])
-            print()
-
-    if type(hyperparameter_value) == type(bool()):
-        print()
-        vals = boolValue(label)
-        space[label] = hp.choice(label, vals)
-        print()
-
-
-    if type(hyperparameter_value) == type(str()):
-        print()
-        print(' im an string')
-        vals = stringInput(label)
-        space[label] = hp.choice(label, vals)
-        print()
-    
-    print(space)
-    #space[label] = hp.choice(label, vals)
-evaluations = validInput(' How Many evaluations: ', int)
-#space['activation'] = hp.choice('activation', ['tanh', 'relu'])
-#space['dropout'] = hp.uniform('dropout', low=0.001, high=1)
-
-
-print(space)
-
+        for paramter_group, hyperparemeters in input_hyper_parameters.items():
+            for hyperparameter in hyperparemeters:
+                label = str(hyperparameter)
+                current = [hyperparemeters[hyperparameter]]
+                space[label] = hp.choice(label, current)
+        print(space)
+        return space
