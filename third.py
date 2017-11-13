@@ -87,7 +87,8 @@ def mlp(space):
 space = {}
 
 space = gs.genSpace()
-print (' printing space from model: ', space)
+interations = gs.interations()
+print(interations)
 #evaluations = gs.evaluations
 # space['activation'] = hp.choice('activation', ['tanh', 'relu'])
 # space['dropout'] = hp.uniform('dropout', low=0.001, high=1)
@@ -104,7 +105,7 @@ best = fmin(mlp,
             space=space,
             algo=tpe.suggest,
             trials=trials,
-            max_evals=2)
+            max_evals=interations)
 
 # Get the trained model from the best trial
 pickle.dump(trials, open("results.pkl", "wb"))

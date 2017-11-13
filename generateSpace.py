@@ -75,7 +75,9 @@ def isGreaterThan(min, max, step=None):
     else:
         return min
 
-
+def interations():
+    evaluations = validInput(' How Many evaluations: ', int)
+    return evaluations
 
 
 def frange(x, y, jump):
@@ -289,7 +291,7 @@ def genSpace():
             
             print(space)
             #space[label] = hp.choice(label, vals)
-        evaluations = validInput(' How Many evaluations: ', int)
+        
         #space['activation'] = hp.choice('activation', ['tanh', 'relu'])
         #space['dropout'] = hp.uniform('dropout', low=0.001, high=1)
 
