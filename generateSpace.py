@@ -61,8 +61,8 @@ def validInput(input_string, inputType):
                 sys.exit(0)
             #maybe add default value
             vals = inputType(inp)
-            print (vals)
-            print(type(vals))
+            #print (vals)
+            #print(type(vals))
             return vals
         except ValueError:
             print(' Not correct type {} is required'.format(inputType))
@@ -230,7 +230,7 @@ def genSpace():
             hyperparameter_value = hyperparemeters[hyperparameter]
             label = str(hyperparameter)
             Current = str(hyperparemeters[hyperparameter])
-            print (type(hyperparameter_value))
+            #print (type(hyperparameter_value))
 
             print ('')
             print ('')
@@ -284,7 +284,7 @@ def genSpace():
 
             if type(hyperparameter_value) == type(str()):
                 print()
-                print(' im an string')
+                #print(' im an string')
                 vals = stringInput(label)
                 space[label] = hp.choice(label, vals)
                 print()

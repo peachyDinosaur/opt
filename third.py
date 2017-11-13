@@ -108,9 +108,9 @@ best = fmin(mlp,
             max_evals=interations)
 
 # Get the trained model from the best trial
-pickle.dump(trials, open("results.pkl", "wb"))
+#pickle.dump(trials, open("results.pkl", "wb"))
 print (best)
-# best_model = trials.best_trial['result']['model']
+best_model = trials.best_trial['result']['model']
 
 # # Compute the training and testing scores on this model
 # print("Training Accuracy: %f" % best_model.score(X_train, y_train))
